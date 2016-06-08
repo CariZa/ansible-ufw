@@ -1,4 +1,26 @@
 ---
-- name: "hello"
-  debug:
-    msg: "Hello {{foo}}"
+- name: Install pip
+  apt: name=python-pip state=present
+
+- name: Install pexpect using pip
+  pip: name=pexpect
+
+- name: Install ufw
+  apt: name=ufw state=present
+
+- name: Enable firewall
+  expect:
+    command: ufw enable
+    responses:
+      y : "y"
+
+- name: Replace with IPV6=yes
+  lineinfile:
+    dest: /etc/default/ufw
+    regexp: ^IPV6=
+    line: IPV6=yes
+
+#Disabling at the end else the firewall blocks my ssh access
+#Doesnt work yet
+# - name: Disable firewall
+#   command: sudo ufw disable
