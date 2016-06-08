@@ -1,0 +1,15 @@
+---
+- hosts: all
+  vars:
+    - foo: bar
+
+  pre_tasks:
+    # note: you wouldn't want to do this in prod ;)
+    - name: Add authorized keys
+      authorized_key:
+        user: root
+        key: "https://github.com/{{item}}.keys"
+      with_items: "{{users}}"
+
+  roles:
+    - ufw
