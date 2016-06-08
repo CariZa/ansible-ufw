@@ -1,0 +1,4 @@
+---
+- name: "hello"
+  debug:
+    msg: "Hello {{foo}}"
