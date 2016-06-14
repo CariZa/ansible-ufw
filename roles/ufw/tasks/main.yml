@@ -14,13 +14,34 @@
     responses:
       y : "y"
 
+- name: Allow ssh
+  # become: yes
+  # become_method: sudo
+  command: ufw allow ssh
+
 - name: Replace with IPV6=yes
   lineinfile:
     dest: /etc/default/ufw
     regexp: ^IPV6=
     line: IPV6=yes
 
-#Disabling at the end else the firewall blocks my ssh access
-#Doesnt work yet
-# - name: Disable firewall
-#   command: sudo ufw disable
+- name: Disable firewall
+  # become: yes
+  # become_method: sudo
+  command: ufw disable
+
+- name: Enable firewall
+  expect:
+    command: ufw enable
+    responses:
+      y : "y"
+
+- name: Deny incoming requests
+  # become: yes
+  # become_method: sudo
+  command: ufw default deny incoming
+
+- name: Allow outgoing requests
+  # become: yes
+  # become_method: sudo
+  command: ufw default allow outgoing
